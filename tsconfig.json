@@ -1,16 +1,18 @@
 {
 	"compilerOptions": {
-		"baseUrl": "node_modules/@types",
-		"typeRoots": ["node_modules/@types"],
-		"allowSyntheticDefaultImports": true,
-		"removeComments": true,
-		"lib": ["es6", "dom"],
-		"module": "ES6",
-		"moduleResolution": "node",
+		"target": "es5",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"jsx": "react-jsx",
+		"module": "ESNext",
 		"declaration": true,
 		"declarationDir": "types",
-		"target": "es2015"
-	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "dist"]
+		"sourceMap": true,
+		"outDir": "dist",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"emitDeclarationOnly": true
+	}
 }

@@ -1,9 +1,10 @@
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
+// import dts from "rollup-plugin-dts";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -13,7 +14,7 @@ const plugins = [
 	commonjs({
 		include: /node_modules/,
 	}),
-	typescript({ tsconfig: './tsconfig.json' }),
+	typescript({ tsconfig: './tsconfig.json', exclude: ['node_modules'] }),
 	babel({ babelHelpers: 'bundled' }),
 	production && terser(),
 ];
@@ -21,21 +22,28 @@ const plugins = [
 const pkg = require('./package.json');
 const libraryName = pkg.name;
 
-export default {
-	input: 'src/main.ts',
-	output: [
-		{
-			file: `dist/${libraryName}.ems.js`,
-			format: 'esm',
-			name: libraryName,
-			sourcemap: true,
-		},
-		{
-			file: `dist/${libraryName}.umd.js`,
-			format: 'umd',
-			name: libraryName,
-			sourcemap: true,
-		},
-	],
-	plugins,
-};
+export default [
+	{
+		input: 'src/index.ts',
+		output: [
+			{
+				file: pkg.main,
+				format: 'cjs',
+				name: libraryName,
+				sourcemap: true,
+			},
+			{
+				file: pkg.module,
+				format: 'esm',
+				name: libraryName,
+				sourcemap: true,
+			},
+		],
+		plugins,
+	},
+	// {
+	// 	input: 'dist/esm/types/index.d.ts',
+	// 	output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+	// 	plugins: [dts()],
+	// },
+];
